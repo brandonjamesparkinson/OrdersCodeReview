@@ -1,4 +1,9 @@
 
+using DataAccess;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
+
 namespace Api;
 
 public class Program
@@ -13,6 +18,11 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddDbContext<OrderDbContext>(options =>
+                                                      {
+                                                          options.UseSqlite(CreateInMemoryDatabase());
+                                                      });
 
         var app = builder.Build();
 
@@ -32,4 +42,15 @@ public class Program
 
         app.Run();
     }
+
+    private static DbConnection CreateInMemoryDatabase()
+    {
+        var connection = new SqliteConnection("DataSource=file:example.sqlite");
+
+        connection.Open();
+
+        return connection;
+    }
 }
+
+
