@@ -3,6 +3,10 @@ using DataAccess;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
+using Application.Addresses;
+using Application.Customers;
+using Application.Orders;
+using Domain;
 
 namespace Api;
 
@@ -13,6 +17,21 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services
+               .AddScoped<IOrderCreator, OrderCreator>()
+               .AddScoped<ICustomerProvider, CustomerProvider>()
+               .AddScoped<IAddressProvider, AddressProvider>()
+               .AddTransient<ICreateOrderRequestValidator, CreateOrderRequestValidator>()
+            ;
+
+        builder.Services
+               .AddScoped<DbContext, OrderDbContext>()
+               .AddTransient<IUnitOfWork, UnitOfWork>()
+               .AddTransient<IRepository<Order>, Repository<Order>>()
+               .AddTransient<IRepository<Customer>, Repository<Customer>>()
+               .AddTransient<IRepository<Address>, Repository<Address>>()
+               .AddTransient<IRepository<Variant>, Repository<Variant>>()
+            ;
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
