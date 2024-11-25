@@ -9,6 +9,8 @@ using Application.Orders;
 using Domain;
 using Application.Orders.Validators;
 using Application.Outbox;
+using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 
 namespace Api;
 
@@ -44,7 +46,11 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+                                       {
+                                           options.ExampleFilters();
+                                       });
+        builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetExecutingAssembly());
 
         builder.Services.AddDbContext<OrderDbContext>(options =>
                                                       {

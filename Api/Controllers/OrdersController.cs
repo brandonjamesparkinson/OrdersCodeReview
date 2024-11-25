@@ -1,9 +1,12 @@
+using Api.SwaggerExamples;
 using Application.Exceptions;
 using Application.Orders;
 using Client.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Api.Controllers;
+
 [ApiController]
 [Route("[controller]")]
 public class OrdersController : ControllerBase
@@ -20,6 +23,7 @@ public class OrdersController : ControllerBase
 
 
     [HttpPost("[action]")]
+    [SwaggerRequestExample(typeof(CreateOrderRequestDto), typeof(CreateOrderExample))]
     public Task<IActionResult> Create([FromBody]CreateOrderRequestDto request)
     {
         try
@@ -39,6 +43,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost("[action]")]
+    [SwaggerRequestExample(typeof(UpdateOrderRequestDto), typeof(UpdateOrderExample))]
     public Task<IActionResult> Update([FromBody] UpdateOrderRequestDto request)
     {
         try
