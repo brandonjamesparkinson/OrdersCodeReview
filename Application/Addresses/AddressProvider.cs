@@ -33,7 +33,7 @@ public class AddressProvider(IRepository<Address> addressRepo,
                                               billingAddressDto.AddressLineThree!,
                                               billingAddressDto.PostCode);
 
-        var shippingAddress = addresses.SingleOrDefault(x => x.Hash == billingAddressHash)
+        var shippingAddress = addresses.SingleOrDefault(x => x.Hash == shippingAddressHash)
                               ?? CreateAddress(shippingAddressDto.AddressLineOne,
                                                shippingAddressDto.AddressLineTwo!,
                                                shippingAddressDto.AddressLineThree!,

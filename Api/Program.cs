@@ -22,6 +22,7 @@ public class Program
 
         // Add services to the container.
         builder.Services
+               .AddScoped<IOrderReader, OrderReader>()
                .AddScoped<IOrderCreator, OrderCreator>()
                .AddScoped<IOrderUpdater, OrderUpdater>()
                .AddScoped<ICustomerProvider, CustomerProvider>()

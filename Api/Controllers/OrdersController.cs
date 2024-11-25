@@ -11,14 +11,36 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class OrdersController : ControllerBase
 {
+    private readonly IOrderReader _orderReader;
     private readonly IOrderCreator _orderCreator;
     private readonly IOrderUpdater _orderUpdater;
 
-    public OrdersController(IOrderCreator orderCreator,
+    public OrdersController(IOrderReader orderReader,
+                            IOrderCreator orderCreator,
                             IOrderUpdater orderUpdater)
     {
+        _orderReader = orderReader;
         _orderCreator = orderCreator;
         _orderUpdater = orderUpdater;
+    }
+
+    [HttpGet("[action]")]
+    public Task<IActionResult> Get([FromQuery]string orderNumber)
+    {
+        try
+        {
+            var response = _orderReader.ReadOrder(orderNumber);
+
+            return Task.FromResult<IActionResult>(Ok(response));
+        }
+        catch (ValidationException ex)
+        {
+            return Task.FromResult<IActionResult>(BadRequest(ex.Errors));
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 
 
@@ -42,7 +64,7 @@ public class OrdersController : ControllerBase
         }
     }
 
-    [HttpPost("[action]")]
+    [HttpPut("[action]")]
     [SwaggerRequestExample(typeof(UpdateOrderRequestDto), typeof(UpdateOrderExample))]
     public Task<IActionResult> Update([FromBody] UpdateOrderRequestDto request)
     {
