@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Domain;
 
-namespace Application.Orders;
+namespace Application.Orders.Validators;
 
 public class CreateOrderRequestValidator : ICreateOrderRequestValidator
 {

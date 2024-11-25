@@ -9,10 +9,13 @@ namespace Api.Controllers;
 public class OrdersController : ControllerBase
 {
     private readonly IOrderCreator _orderCreator;
+    private readonly IOrderUpdater _orderUpdater;
 
-    public OrdersController(IOrderCreator orderCreator)
+    public OrdersController(IOrderCreator orderCreator,
+                            IOrderUpdater orderUpdater)
     {
         _orderCreator = orderCreator;
+        _orderUpdater = orderUpdater;
     }
 
 
@@ -22,6 +25,25 @@ public class OrdersController : ControllerBase
         try
         {
             var response = _orderCreator.CreateOrder(request);
+
+            return Task.FromResult<IActionResult>(Ok(response));
+        }
+        catch (ValidationException ex)
+        {
+            return Task.FromResult<IActionResult>(BadRequest(ex.Errors));
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    [HttpPost("[action]")]
+    public Task<IActionResult> Update([FromBody] UpdateOrderRequestDto request)
+    {
+        try
+        {
+            var response = _orderUpdater.UpdateOrder(request);
 
             return Task.FromResult<IActionResult>(Ok(response));
         }

@@ -7,6 +7,8 @@ using Application.Addresses;
 using Application.Customers;
 using Application.Orders;
 using Domain;
+using Application.Orders.Validators;
+using Application.Outbox;
 
 namespace Api;
 
@@ -31,6 +33,12 @@ public class Program
                .AddTransient<IRepository<Customer>, Repository<Customer>>()
                .AddTransient<IRepository<Address>, Repository<Address>>()
                .AddTransient<IRepository<Variant>, Repository<Variant>>()
+            ;
+
+        builder.Services
+               .AddScoped<IRepository<OutboxMessage>>()
+               .AddScoped<IOutboxMessageCreator, OutboxMessageCreator>()
+               .AddScoped<IOutboxMessageSender, OutboxMessageSender>()
             ;
 
         builder.Services.AddControllers();

@@ -1,8 +1,13 @@
 ﻿using Application.Addresses;
 using Application.Customers;
+using Application.Exceptions;
+using Application.Orders.Mappers;
+using Application.Orders.Validators;
+using Application.Outbox;
 using Client.Dtos;
 using DataAccess;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Orders;
 
@@ -12,12 +17,18 @@ public class OrderCreator(
     ICreateOrderRequestValidator requestValidator,
     IRepository<Order> orderRepo,
     IRepository<Variant> variantRepo,
+    IRepository<OutboxMessage> outboxRepo,
+    IOutboxMessageCreator outboxMessageCreator,
+    IOutboxMessageSender outboxMessageSender,
     IUnitOfWork unitOfWork)
     : IOrderCreator
 {
     private readonly ICustomerProvider customerProvider = customerProvider;
     private readonly IAddressProvider addressProvider = addressProvider;
     private readonly IRepository<Order> _orderRepo = orderRepo;
+    private readonly IRepository<OutboxMessage> _outboxRepo = outboxRepo;
+    private readonly IOutboxMessageCreator _outboxMessageCreator = outboxMessageCreator;
+    private readonly IOutboxMessageSender _outboxMessageSender = outboxMessageSender;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public OrderDto CreateOrder(CreateOrderRequestDto request)
@@ -38,10 +49,17 @@ public class OrderCreator(
         var products = GetProducts(request.OrderItems);
 
         order.UpdateItems(products);
+        _unitOfWork.Save();
+
+        var outboxMessage = outboxMessageCreator.Create<Order>(order);
+
+        _outboxRepo.Insert(outboxMessage);
 
         _unitOfWork.Save();
 
-        return new OrderDto();
+        _outboxMessageSender.Send(outboxMessage);
+
+        return new OrderDtoMapper().Map(order);
     }
 
     private IDictionary<Variant, int> GetProducts(ICollection<CreateOrderItemDto> items)
@@ -49,7 +67,9 @@ public class OrderCreator(
         var variants = new HashSet<Variant>();
         foreach (var item in items)
         {
-            var variant = variantRepo.Get(x => x.Sku == item.Sku).Single();
+            var variant = variantRepo.Get(x => x.Sku == item.Sku)
+                                     .Include(i => i.Product)
+                                     .Single();
             variants.Add(variant);
         }
 

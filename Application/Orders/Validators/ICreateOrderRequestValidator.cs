@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace Application.Orders;
+namespace Application.Orders.Validators;
 
 public interface ICreateOrderRequestValidator
 {

@@ -55,7 +55,9 @@ public class Order
 
         var bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(seed));
 
-        return $"ORD-{Created.Year % 1000}{Created.Month}-{bytes.GetHashCode()}";
+        var hashGuid = new Guid(bytes);
+
+        return $"ORD-{Created.Year % 1000}{Created.Month}-{hashGuid.GetHashCode()}";
     }
 
     public void UpdateItems(IDictionary<Variant, int> orderItems)
@@ -65,52 +67,20 @@ public class Order
                                                                 x.Value))
                                      .ToList();
 
-        OrderItems.Clear();
-
         foreach(var item in orderedItems)
             OrderItems.Add(item);
+
+        TotalPrice = orderItems.Select(x => x.Key.Price * x.Value).Sum();
     }
-}
 
-public class OrderItem
-{
-    private OrderItem() {}
-
-    public OrderItem(Order order,
-                     Variant variant,
-                     int quantity)
+    public void UpdateShippingAddress(string lineOne,
+                                      string lineTwo,
+                                      string lineThree,
+                                      string postCode)
     {
-        OrderId = order.OrderId;
-        Order = order;
-
-        VariantId = variant.VariantId;
-        Variant = variant;
-
-        Quantity = quantity;
+        ShippingAddress.Update(lineOne,
+                               lineTwo,
+                               lineThree,
+                               postCode);
     }
-
-    public int OrderItemId { get; private set; }
-    public int OrderId { get; private set; }
-    public int VariantId { get; private set; }
-    public int Quantity { get; set; }
-
-    public Order Order { get; set; }
-    public Variant Variant { get; set; }
-}
-
-public class Product
-{
-    public int ProductId { get; private set; }
-    public Guid ExternalId { get; private set; }
-    public string Name { get; private set; }
-    public string ImageUrl { get; private set; }
-}
-
-public class Variant
-{
-    public int VariantId { get; private set; }
-    public Guid ExternalId { get; private set; }
-    public string Name { get; private set; }
-    public string Sku { get; private set; }
-    public decimal Price { get; private set; }
 }
