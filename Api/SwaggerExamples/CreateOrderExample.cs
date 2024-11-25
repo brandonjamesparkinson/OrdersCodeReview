@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Client.Dtos;
+﻿using Client.Dtos;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Api.SwaggerExamples;
@@ -35,12 +34,12 @@ public class CreateOrderExample : IExamplesProvider<CreateOrderRequestDto>
                 new ()
                 {
                     Quantity = 1,
-                    Sku = "SKU-ONE",
+                    Sku = "BFRE011",
                 },
                 new()
                 {
                     Quantity = 2,
-                    Sku = "SKU-TWO",
+                    Sku = "L1700FSLH",
                 }
             },
         };

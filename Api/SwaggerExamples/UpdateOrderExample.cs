@@ -22,17 +22,17 @@ public class UpdateOrderExample : IExamplesProvider<UpdateOrderRequestDto>
                 new ()
                 {
                     Quantity = 1,
-                    Sku = "SKU-ONE",
-                },
-                new() 
-                {
-                    Quantity = 2,
-                    Sku = "SKU-TWO",
+                    Sku = "BFRE011",
                 },
                 new()
                 {
-                    Quantity = 3,
-                    Sku = "SKU-THREE",
+                    Quantity = 1,
+                    Sku = "L1700FSLH",
+                },
+                new()
+                {
+                    Quantity = 1,
+                    Sku = "CRZ-PK",
                 }
             },
         };

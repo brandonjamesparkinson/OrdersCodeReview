@@ -13,6 +13,7 @@ public class Order
     public Order(Customer customer,
                  Address shippingAddress,
                  Address billingAddress)
+        : this() 
     {
         CustomerId = customer.CustomerId;
         Customer = customer;

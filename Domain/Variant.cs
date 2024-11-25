@@ -2,7 +2,23 @@
 
 public class Variant
 {
-    public int VariantId { get; private set; }
+    private Variant(){}
+
+    public Variant(Product product,
+                   string name,
+                   string sku,
+                   decimal price)
+    {
+        ExternalId = Guid.NewGuid();
+        
+        ProductId = product.ProductId;
+        
+        Name = name;
+        Sku = sku;
+        Price = price;
+    }
+
+    public int VariantId { get; set; }
     public Guid ExternalId { get; private set; }
     public int ProductId { get; private set; }
     public string Name { get; private set; }
