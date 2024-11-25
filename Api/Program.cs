@@ -23,13 +23,19 @@ public class Program
         // Add services to the container.
         builder.Services
                .AddScoped<IOrderCreator, OrderCreator>()
+               .AddScoped<IOrderUpdater, OrderUpdater>()
                .AddScoped<ICustomerProvider, CustomerProvider>()
                .AddScoped<IAddressProvider, AddressProvider>()
                .AddTransient<ICreateOrderRequestValidator, CreateOrderRequestValidator>()
             ;
 
         builder.Services
-               .AddScoped<DbContext, OrderDbContext>()
+               .AddScoped<DbContext, OrderDbContext>(config =>
+                                                     {
+                                                         var context = config.GetRequiredService<OrderDbContext>();
+                                                         context.Database.EnsureCreated();
+                                                         return context;
+                                                     })
                .AddTransient<IUnitOfWork, UnitOfWork>()
                .AddTransient<IRepository<Order>, Repository<Order>>()
                .AddTransient<IRepository<Customer>, Repository<Customer>>()
@@ -38,7 +44,7 @@ public class Program
             ;
 
         builder.Services
-               .AddScoped<IRepository<OutboxMessage>>()
+               .AddScoped<IRepository<OutboxMessage>, Repository<OutboxMessage>>()
                .AddScoped<IOutboxMessageCreator, OutboxMessageCreator>()
                .AddScoped<IOutboxMessageSender, OutboxMessageSender>()
             ;
@@ -79,7 +85,7 @@ public class Program
     private static DbConnection CreateInMemoryDatabase()
     {
         var connection = new SqliteConnection("DataSource=file:example.sqlite");
-
+        
         connection.Open();
 
         return connection;

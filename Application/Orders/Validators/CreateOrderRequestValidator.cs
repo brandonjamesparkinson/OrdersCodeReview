@@ -15,7 +15,7 @@ public class CreateOrderRequestValidator : ICreateOrderRequestValidator
         if (string.IsNullOrWhiteSpace(customer.Name))
             errors.Add(nameof(customer.Name), "Name is required");
 
-        if (Regex.IsMatch(customer.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase))
+        if (!Regex.IsMatch(customer.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase))
             errors.Add(nameof(customer.Email), "Email is not valid");
 
         if (customer.Created > DateTime.Now)
@@ -27,9 +27,9 @@ public class CreateOrderRequestValidator : ICreateOrderRequestValidator
         if (string.IsNullOrWhiteSpace(billingAddress.PostCode))
             errors.Add(nameof(billingAddress.PostCode), "PostCode is required");
 
-        if (Regex.IsMatch(billingAddress.PostCode,
-                          @"^(GIR 0AA|((([A-Z]{1,2}[0-9][0-9A-Z]?)|(([A-Z]{1,2}[0-9][0-9A-Z]?)))(\s?[0-9][A-Z]{2})))$",
-                          RegexOptions.IgnoreCase))
+        if (!Regex.IsMatch(billingAddress.PostCode,
+                           @"^(GIR 0AA|((([A-Z]{1,2}[0-9][0-9A-Z]?)|(([A-Z]{1,2}[0-9][0-9A-Z]?)))(\s?[0-9][A-Z]{2})))$",
+                           RegexOptions.IgnoreCase))
             errors.Add(nameof(billingAddress.PostCode), "Postcode is not valid");
 
         if (string.IsNullOrWhiteSpace(shippingAddress.LineOne))
@@ -38,9 +38,9 @@ public class CreateOrderRequestValidator : ICreateOrderRequestValidator
         if (string.IsNullOrWhiteSpace(shippingAddress.PostCode))
             errors.Add(nameof(shippingAddress.PostCode), "PostCode is required");
 
-        if (Regex.IsMatch(shippingAddress.PostCode,
-                          @"^(GIR 0AA|((([A-Z]{1,2}[0-9][0-9A-Z]?)|(([A-Z]{1,2}[0-9][0-9A-Z]?)))(\s?[0-9][A-Z]{2})))$",
-                          RegexOptions.IgnoreCase))
+        if (!Regex.IsMatch(shippingAddress.PostCode,
+                           @"^(GIR 0AA|((([A-Z]{1,2}[0-9][0-9A-Z]?)|(([A-Z]{1,2}[0-9][0-9A-Z]?)))(\s?[0-9][A-Z]{2})))$",
+                           RegexOptions.IgnoreCase))
             errors.Add(nameof(shippingAddress.PostCode), "Postcode is not valid");
 
         return !errors.Any();

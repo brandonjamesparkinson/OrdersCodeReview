@@ -28,6 +28,9 @@ public class Address
     public string PostCode { get; private set; }
     public DateTime Created { get; private set; }
 
+    public ICollection<Order> BillingOrders { get; private set; }
+    public ICollection<Order> ShippingOrders { get; private set; }
+
     public static Guid GenerateAddressHash(string lineOne,
                                            string lineTwo,
                                            string lineThree,

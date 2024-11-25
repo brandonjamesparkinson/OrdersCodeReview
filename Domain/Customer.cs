@@ -21,4 +21,6 @@ public class Customer
     public string Name { get; private set; }
     public string? PhoneNumber { get; private set; }
     public DateTime Created { get; private set; }
+
+    public ICollection<Order> Orders { get; private set; }
 }
