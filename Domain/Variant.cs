@@ -18,7 +18,7 @@ public class Variant
         Price = price;
     }
 
-    public int VariantId { get; set; }
+    public int VariantId { get; set; /* trade off for seeding */}
     public Guid ExternalId { get; private set; }
     public int ProductId { get; private set; }
     public string Name { get; private set; }

@@ -12,7 +12,7 @@ public class Product
         ImageUrl = imageUrl;
     }
 
-    public int ProductId { get; set; }
+    public int ProductId { get; set; /* trade off for seeding */ }
     public Guid ExternalId { get; private set; }
     public string Name { get; private set; }
     public string ImageUrl { get; private set; }
