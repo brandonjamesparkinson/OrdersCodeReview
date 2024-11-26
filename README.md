@@ -2,24 +2,24 @@
 
 Thank you for taking the time to participate in this technical assessment!
 
-We’ve designed this task to give you an opportunity to showcase your skills and help us understand your approach to evaluating and solving technical challenges. It’s also something we’ll discuss further during the interview if you proceed to that stage.
+This task is to evaluate some code that is not up to our standards and yet could be seen in the real world.  We’ve designed this task to give you an opportunity to showcase your knowledge and help us understand your approach to evaluating and solving technical challenges. It’s also something we’ll discuss further during the interview if you proceed to that stage.
 
 At Victorian Plumbing, we value clear thinking, problem-solving, and the ability to identify issues early to build robust solutions. This task is your chance to demonstrate how you approach thinking about code.
 
-We’ll use the results of this task as an important part of our decision-making process. While we may consider other factors, this task will be a key focus in deciding whether to invite you for an interview.
+We’ll use the results of this task as an important part of our decision-making process. While we may consider other factors, this task will be the primary focus in deciding whether to invite you for an interview.
 
 We’re excited to see what you find so good luck!
 
 ## Objective
 
-Your task is to perform a code review of a simple solution built using Entity Framework. The solution consists of three API endpoints for managing orders:.
+Your task is to perform a code review of a simple solution built using C# and Entity Framework. The solution consists of three API endpoints for managing orders.
 
 ## What You Need to Do
 
 1. **Take some time to read the solution thoroughly and feel free to run it**:    
    - Each endpoint works with the example swagger payloads   
    - Play with it, test it and check the details
-   - We haven't provided unit tests, this is deliberate
+   - We haven't provided unit tests, this is deliberate (so there is no need to comment on this)
    - Some classes and interfaces contain placeholders or trade offs to meet the needs of setting up the task but they are generally labelled
 
 2. **Write a Code Review**:
@@ -43,5 +43,5 @@ Your task is to perform a code review of a simple solution built using Entity Fr
 
 We want you to be at your best when completing this task, so please work at a pace that suits you!
 
-
 We’re looking forward to seeing your thoughts!
+
