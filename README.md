@@ -12,7 +12,7 @@ We’re excited to see what you find so good luck!
 
 ## Objective
 
-Your task is to perform a code review of a simple solution built using C# and Entity Framework. The solution consists of three API endpoints for managing orders.
+Your task is to perform a code review of a simple solution built using C# and Entity Framework. The solution consists of three API endpoints for managing orders.  Imagine this is taking customer input from a basket or customer service system to create/update an order record at a simplified level.  This order record would then go to downstream systems to be processed.
 
 ## What You Need to Do
 
@@ -30,6 +30,7 @@ Your task is to perform a code review of a simple solution built using C# and En
    - If you find anything you like then tell us!  We like keeping things constructive
    - Write a document that reports on the code, you may use any format you like
    - If you spot any potential bugs then write up how the bug would occur - this is the most important part
+   - Check the data structure of the database, are there any issues here - also very important
    - If you spot anything where you can refer to a resource or documentation then provide a link and show off your sources and knowledge
    - Also consider the resources we've provided in the job description about how we write code
    - Consider best practises
