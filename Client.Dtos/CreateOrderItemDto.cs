@@ -2,6 +2,6 @@
 
 public class CreateOrderItemDto
 {
-    public string Sku { get; set; }
+    public string Sku { get; set; } // non nullable property - suggest required 
     public int Quantity { get; set; }
 }

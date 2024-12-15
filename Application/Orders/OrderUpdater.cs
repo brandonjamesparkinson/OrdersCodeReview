@@ -49,7 +49,7 @@ public class OrderUpdater(
                                            item
                                        })
                                  .ToDictionary(x => x.variant, x => x.item.Quantity);
-
+        // breaks here - order was null 
         order!.UpdateItems(orderItems);
         order.UpdateShippingAddress(request.ShippingAddress.AddressLineOne,
                                     request.ShippingAddress.AddressLineTwo!,

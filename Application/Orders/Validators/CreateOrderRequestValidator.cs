@@ -5,6 +5,12 @@ namespace Application.Orders.Validators;
 
 public class CreateOrderRequestValidator : ICreateOrderRequestValidator
 {
+    // Well structured and readable - assume it is stacked vertically in terms of what is filled out on the form 
+    // e.g. Name, email, addresses 
+
+    // regex - may be worth storing static regex for performance gains
+    //private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    //private static readonly Regex PostcodeRegex = new(@"^(GIR 0AA|...)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
     public bool TryValidate(Customer customer,
                             Address billingAddress,
                             Address shippingAddress,
@@ -24,6 +30,7 @@ public class CreateOrderRequestValidator : ICreateOrderRequestValidator
         if (string.IsNullOrWhiteSpace(billingAddress.LineOne))
             errors.Add(nameof(billingAddress.LineOne), "First address line is required");
 
+        // DRY - Dont repeat yourself, post code validation is present multiple times (for billing address and for shipping address, consider extraction into a helper method 
         if (string.IsNullOrWhiteSpace(billingAddress.PostCode))
             errors.Add(nameof(billingAddress.PostCode), "PostCode is required");
 

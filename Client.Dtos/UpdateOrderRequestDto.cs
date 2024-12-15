@@ -2,7 +2,7 @@
 
 public class UpdateOrderRequestDto
 {
-    public string OrderNumber { get; set; }
-    public AddressDto ShippingAddress { get; set; }
-    public ICollection<CreateOrderItemDto> OrderItems { get; set; }
+    public string OrderNumber { get; set; } // non nullable property - suggest required 
+    public AddressDto ShippingAddress { get; set; } // non nullable property - suggest required 
+    public ICollection<CreateOrderItemDto> OrderItems { get; set; } // non nullable property - suggest required 
 }

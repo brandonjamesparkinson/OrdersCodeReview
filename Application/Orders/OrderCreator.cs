@@ -11,6 +11,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Orders;
 
+// consider constructor use like this for readability / more standard approach 
+//public OrderCreator(
+//       ICustomerProvider customerProvider,
+//       IAddressProvider addressProvider,
+//       ICreateOrderRequestValidator requestValidator,
+//       IRepository<Order> orderRepo,
+//       IRepository<Variant> variantRepo,
+//       IRepository<OutboxMessage> outboxRepo,
+//       IOutboxMessageCreator outboxMessageCreator,
+//       IOutboxMessageSender outboxMessageSender,
+//       IUnitOfWork unitOfWork)
+//{
+//    _customerProvider = customerProvider;
+//    _addressProvider = addressProvider;
+//    _requestValidator = requestValidator;
+//    _orderRepo = orderRepo;
+//    _variantRepo = variantRepo;
+//    _outboxRepo = outboxRepo;
+//    _outboxMessageCreator = outboxMessageCreator;
+//    _outboxMessageSender = outboxMessageSender;
+//    _unitOfWork = unitOfWork;
+//}
+
 public class OrderCreator(
     ICustomerProvider customerProvider,
     IAddressProvider addressProvider,
@@ -31,6 +54,10 @@ public class OrderCreator(
     private readonly IOutboxMessageSender _outboxMessageSender = outboxMessageSender;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
+    // currently code gets customer, retrieves addresses, validates, inserts the order then fetches products 
+    // consider structuring logic to -> Validate -> Retrieve -> Create and Insert 
+    // this way, avoid partial insertions  
+    // outbox messages may have issues if the sle`nding fails, the order may have persisted - possibly rely on separate processes for sending outbox msg
     public OrderDto CreateOrder(CreateOrderRequestDto request)
     {
         var customer = customerProvider.GetCustomer(request.Customer);
@@ -69,7 +96,8 @@ public class OrderCreator(
         {
             var variant = variantRepo.Get(x => x.Sku == item.Sku)
                                      .Include(i => i.Product)
-                                     .Single();
+                                     //.Single(); // single after include - if no or multiple found it will throw a generic exception - 
+                                     .SingleOrDefault(); // consider singleordefault 
             variants.Add(variant);
         }
 

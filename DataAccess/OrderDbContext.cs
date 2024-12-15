@@ -15,6 +15,9 @@ public class OrderDbContext : DbContext
         _connection = RelationalOptionsExtension.Extract(options).Connection!;
     }
 
+    // Large method, defining configuration for multiple entities and then seeding datainline
+    // I would consider splitting each entity into separate classes using IEntityTypeConfiguration<T> Interface
+    // this would keep OnModelCreating clean, and would make it easier to maintain and read 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Address>(entity =>
@@ -25,7 +28,7 @@ public class OrderDbContext : DbContext
 
                                          entity.Property(e => e.AddressId)
                                                .ValueGeneratedOnAdd()
-                                               .UseIdentityColumn(1);
+                                               .UseIdentityColumn(1); // default is 1, possible to omit '1' for cleaner code. 
 
                                          entity.Property(e => e.Created)
                                                .HasColumnType("datetime")
@@ -111,7 +114,7 @@ public class OrderDbContext : DbContext
                                        entity.HasOne(d => d.BillingAddress).WithMany(p => p.BillingOrders)
                                              .HasForeignKey(d => d.BillingAddressId)
                                              .OnDelete(DeleteBehavior.ClientSetNull)
-                                             .HasConstraintName("FK_Orders_Addresses_Billing");
+                                             .HasConstraintName("FK_Orders_Addresses_Billing"); // Well defined foreign keys, would be useful to define indexes where appropriate or they exist 
 
                                        entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                                              .HasForeignKey(d => d.CustomerId)
@@ -235,7 +238,7 @@ public class OrderDbContext : DbContext
 
         var veronaBath = new Product("Verona Freestanding Modern Bath",
                                      "https://images.victorianplumbing.co.uk/products/1650-x-750-luxury-modern-double-ended-curved-freestanding-bath/mainimages/bfre011_l2.png");
-        veronaBath.ProductId = 1000;
+        veronaBath.ProductId = 1000; // avoid hardcoding IDs - I have found these can change between environments, maybe some kind of lookup by product code which is strictly defined - e.g. BathModernFreeStandVerona
         var kentBath = new Product("Kent Single Ended Bath",
                                      "https://images.victorianplumbing.co.uk/products/kent-single-ended-bath/mainimages/kentsingleendedbathl.jpg");
         kentBath.ProductId = 1100;
